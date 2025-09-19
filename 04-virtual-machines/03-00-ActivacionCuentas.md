@@ -2,28 +2,6 @@
 
 Antes de comenzar con la gestión y operación de una plataforma cloud vamos a ver como activar nuestra cuenta en GCP y Azure, para así tener nuestro *free trial*. 
 
-###### Activando Azure
-
-Empezaremos con Microsoft Azure. En este caso, lo único que tenemos que hacer es solicitar nuestros créditos gratuitos para estudiantes en el siguiente [link](https://azure.microsoft.com/es-es/free/students/), y proceder con la autenticación mediante la cuenta de estudiante de la universidad:
-
-<img src="images/azure-students.png" alt="azure-students" style="zoom:67%;" />
-
-Al terminar todo el proceso de autenticación y verificación, se llega a la siguiente *landing page*:
-
-<img src="images/azure-landing.png" alt="azure-landing" style="zoom:50%;" />
-
-Tras hacer click en la barra de navegación en "Microsoft Azure" llegamos a la consola principal:
-
-<img src="images/azure-console.png" alt="azure-console" style="zoom:50%;" />
-
-Para comprobar que tenemos activa nuestra subscripción como estudiantes, solo tenemos que hacer click en el icono de **Subscriptions** que aparece bajo la sección **Navigate**, y veremos:
-
-<img src="images/azure-subscription.png" alt="azure-subscription" style="zoom:50%;" />
-
-Si lo que queremos es directamente comprobar cuantos créditos nos quedan disponibles, podemos ir directamente al siguiente destino: https://www.microsoftazuresponsorships.com/Balance, lo que nos debería mostrar algo como lo siguiente:
-
-<img src="images/azure-balance.png" alt="azure-balance" style="zoom:50%;" />
-
 ###### Activando GCP
 
 Para la activación de la suscripción de estudiante (que viene con unos créditos gratuitos al igual que en el caso de Azure), necesitamos que el responsable del curso comparta con nosotros el "cupón" correspondiente. 
