@@ -11,10 +11,53 @@ así como declarar todas las dependencias en un manifiesto, en nuestro caso ser�
 
 ### Previo
 
-- Instalar docker en la máquina virtual: https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
-- Añadir nuestro usuario al grupo docker para poder interactuar con docker sin ser sudo
-  ```
-   sudo usermod -aG docker $(whoami)
+- Instalar docker
+  ```bash
+    #!/bin/bash
+    # ===============================
+    # Script de instalación de Docker Engine en WSL2 (Ubuntu)
+    # ===============================
+    
+    set -e
+    
+    echo "[1/7] Actualizando paquetes..."
+    sudo apt update && sudo apt upgrade -y
+    
+    echo "[2/7] Instalando dependencias..."
+    sudo apt install -y \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release
+    
+    echo "[3/7] Configurando clave GPG de Docker..."
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+      | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    
+    echo "[4/7] Agregando repositorio oficial de Docker..."
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+      https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+      | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    
+    echo "[5/7] Instalando Docker Engine..."
+    sudo apt update
+    sudo apt install -y \
+        docker-ce \
+        docker-ce-cli \
+        containerd.io \
+        docker-compose-plugin
+    
+    echo "[6/7] Configurando permisos para el usuario actual..."
+    sudo usermod -aG docker $USER
+    
+    echo "[7/7] Instalación finalizada."
+    echo "⚠️ IMPORTANTE: Cierra y vuelve a abrir tu terminal o ejecuta 'newgrp docker' para aplicar los permisos."
+    
+    echo
+    echo "Prueba la instalación ejecutando:"
+    echo "   docker run hello-world"
   ```
 
 ### La aplicación
