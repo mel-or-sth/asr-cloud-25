@@ -184,3 +184,29 @@ gratuitos, podemos proceder a la limpieza del proyecto ejecutando el script [cle
 ```shell
 chmod a+x clean.sh && ./clean.sh
 ```
+
+#### 🔹 Ejemplos con `curl`
+
+
+```bash
+#Añadir estudiante:
+curl -X POST http://localhost:8080/ \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Alice"}'
+
+#Añadir otro estudiante:
+curl -X POST http://localhost:8080/ \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Bob"}'
+
+#Listar estudiantes:
+curl http://localhost:8080/
+
+#Resetear lista de estudiantes:
+curl -X POST http://localhost:8080/reset
+
+#Resetear lista y añadir estudiante en un solo paso:
+curl -X POST http://localhost:8080/reset \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Charlie"}'
+```
