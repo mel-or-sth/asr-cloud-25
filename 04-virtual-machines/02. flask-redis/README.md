@@ -91,9 +91,14 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
   (TCP) `6379`:
    
    ```shell
+   set -o allexport
+   source config.ini
+   set +o allexport
+
    gcloud compute instances create-with-container $redis_server \
       --machine-type="$machine_type" \
       --container-image="$redis_image" \
+      --zone=europe-west1-b \
       --quiet
    ```
    Las opciones de configuración de la máquina y de la imagen vienen dadas en el fichero
@@ -123,6 +128,8 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
 
   ```
   docker run -p 6379:6379 redis
+
+  docker build -t asr-flask:v.0.0.1 .
   docker run -e REDIS_IP_GCP=host.docker.internal -p 5000:5000 --add-host=host.docker.internal:host-gateway asr-flask:v.0.0.1
 
   #Comprobar elementos
@@ -142,6 +149,8 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
 4. Publicar la imagen de la aplicación en nuestro `Container Registry` asociado al proyecto GCP:
   ```shell
   docker push "$app_image_uri"
+
+  docker push europe-west1-docker.pkg.dev/manifest-access-473306-h4/asr-registry/asr-flask:v.0.0.1
   ```
   
   Si falla este paso, probablemente haya que lanzar el siguiente comando para conectar nuestra instalación docker con el registry de Google
@@ -155,6 +164,7 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
     --machine-type=$machine_type \
     --container-image=$app_image_uri \
     --tags=app-server \
+    --zone=europe-west1-b \
     --container-env=REDIS_IP_GCP=$REDIS_VM_IP
    ```
 
