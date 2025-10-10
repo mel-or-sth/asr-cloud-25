@@ -71,6 +71,13 @@ referimos a la documentación oficial [aquí](https://www.terraform.io/docs/lang
 Una vez tenemos el fichero de configuración guardado como [main.tf](main.tf),
 procedemos a la inicialización, planificación y aplicación del mismo:
 
+#### Conectar instancia google con terraform
+
+```
+gcloud auth application-default login
+```
+
+
 #### Inicialización
 
 A continuación mostramos el comportamiento esperado:
