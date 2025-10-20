@@ -131,18 +131,7 @@ Los pasos necesarios son (ver [deployment.sh](deployment.sh)):
 
   docker build -t asr-flask:v.0.0.1 .
   docker run -e REDIS_IP_GCP=host.docker.internal -p 5000:5000 --add-host=host.docker.internal:host-gateway asr-flask:v.0.0.1
-
-  #Comprobar elementos
-  curl localhost:5000 
-  # Insertando primer elemento en el redis
-  curl --header "Content-Type: application/json" \
-  --request POST \  
-  --data '{"name":"paco"}' \
-  "http://localhost:5000/?name=paco"
-  # Vaciando la lista
-  curl localhost:5000/reset
   ```
-
 
   
   
