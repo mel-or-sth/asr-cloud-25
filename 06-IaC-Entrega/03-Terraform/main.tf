@@ -1,21 +1,34 @@
+# main.tf
 provider "google" {
-  project = "savvy-bay-362807"
-  region  = "europe-west1"
-  zone    = "europe-west1-d"
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
 }
 
 resource "google_compute_instance" "terraform" {
   name         = "terraform"
-  machine_type = "e2-micro"
+  machine_type = var.machine_type
+
   boot_disk {
     initialize_params {
-      image = "projects/centos-cloud/global/images/centos-stream-9-v20240919"
+      image = var.image
     }
   }
+
   network_interface {
-    network = "default"
-    access_config {
-    }
+    network       = var.network
+    access_config {}
   }
 }
 
+resource "google_compute_firewall" "allow_ssh_http" {
+  name    = "allow-ssh-http"
+  network = var.network
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "80"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}

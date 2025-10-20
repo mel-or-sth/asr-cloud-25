@@ -1,0 +1,247 @@
+mel@fedora:~/ownCloud/university/comillas/arquitectura/asr-cloud-25/06-IaC-Entrega/03-Terraform$ terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_firewall.allow_ssh_http will be created
+  + resource "google_compute_firewall" "allow_ssh_http" {
+      + creation_timestamp = (known after apply)
+      + destination_ranges = (known after apply)
+      + direction          = (known after apply)
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "allow-ssh-http"
+      + network            = "default"
+      + priority           = 1000
+      + project            = "manifest-access-473306-h4"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "0.0.0.0/0",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+              + "80",
+            ]
+          + protocol = "tcp"
+        }
+    }
+
+  # google_compute_instance.terraform will be created
+  + resource "google_compute_instance" "terraform" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + creation_timestamp   = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + effective_labels     = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "e2-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform"
+      + project              = "manifest-access-473306-h4"
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + terraform_labels     = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + zone                 = "europe-west1-d"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + guest_os_features          = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + architecture           = (known after apply)
+              + image                  = "projects/centos-cloud/global/images/centos-stream-9-v20240919"
+              + labels                 = (known after apply)
+              + provisioned_iops       = (known after apply)
+              + provisioned_throughput = (known after apply)
+              + resource_policies      = (known after apply)
+              + size                   = (known after apply)
+              + snapshot               = (known after apply)
+              + type                   = (known after apply)
+            }
+        }
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = "default"
+          + network_attachment          = (known after apply)
+          + network_ip                  = (known after apply)
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+mel@fedora:~/ownCloud/university/comillas/arquitectura/asr-cloud-25/06-IaC-Entrega/03-Terraform$ terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_firewall.allow_ssh_http will be created
+  + resource "google_compute_firewall" "allow_ssh_http" {
+      + creation_timestamp = (known after apply)
+      + destination_ranges = (known after apply)
+      + direction          = (known after apply)
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "allow-ssh-http"
+      + network            = "default"
+      + priority           = 1000
+      + project            = "manifest-access-473306-h4"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "0.0.0.0/0",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+              + "80",
+            ]
+          + protocol = "tcp"
+        }
+    }
+
+  # google_compute_instance.terraform will be created
+  + resource "google_compute_instance" "terraform" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + creation_timestamp   = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + effective_labels     = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "e2-micro"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "terraform"
+      + project              = "manifest-access-473306-h4"
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + terraform_labels     = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + zone                 = "europe-west1-d"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + guest_os_features          = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + architecture           = (known after apply)
+              + image                  = "projects/centos-cloud/global/images/centos-stream-9-v20240919"
+              + labels                 = (known after apply)
+              + provisioned_iops       = (known after apply)
+              + provisioned_throughput = (known after apply)
+              + resource_policies      = (known after apply)
+              + size                   = (known after apply)
+              + snapshot               = (known after apply)
+              + type                   = (known after apply)
+            }
+        }
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = "default"
+          + network_attachment          = (known after apply)
+          + network_ip                  = (known after apply)
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+google_compute_firewall.allow_ssh_http: Creating...
+google_compute_instance.terraform: Creating...
+google_compute_firewall.allow_ssh_http: Still creating... [10s elapsed]
+google_compute_instance.terraform: Still creating... [10s elapsed]
+google_compute_firewall.allow_ssh_http: Creation complete after 12s [id=projects/manifest-access-473306-h4/global/firewalls/allow-ssh-http]
+google_compute_instance.terraform: Still creating... [20s elapsed]
+google_compute_instance.terraform: Creation complete after 27s [id=projects/manifest-access-473306-h4/zones/europe-west1-d/instances/terraform]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+mel@fedora:~/ownCloud/university/comillas/arquitectura/asr-cloud-25/06-IaC-Entrega/03-Terraform$ gcloud compute instances list
+NAME              ZONE            MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+example-instance  europe-west1-b  e2-medium                  10.132.0.6                  SUSPENDED
+jump-vm           europe-west1-b  e2-micro                   10.132.0.9                  SUSPENDED
+web-vm            europe-west1-b  e2-micro                   10.132.0.10                 SUSPENDED
+terraform         europe-west1-d  e2-micro                   10.132.0.12  34.38.121.235  RUNNING
+(.venv) mel@fedora:~/ownCloud/university/comillas/arquitectura/asr-cloud-25/06-IaC-Entrega/03-Terraform$ gcloud compute firewall-rules list
+NAME            NETWORK  DIRECTION  PRIORITY  ALLOW          DENY  DISABLED
+allow-ssh-http  default  INGRESS    1000      tcp:22,tcp:80        False
+
+To show all fields of the firewall, please show in JSON format: --format=json
+To show all fields in table format, please see the examples in --help.
+
+mel@fedora:~/ownCloud/university/comillas/arquitectura/asr-cloud-25/06-IaC-Entrega/03-Terraform$ ll -a
+total 26196
+drwxr-xr-x. 1 mel mel      316 Oct 20 16:12 .
+drwxr-xr-x. 1 mel mel       84 Oct  3 08:16 ..
+-rw-r--r--. 1 mel mel     4922 Jun  5  2024 LICENSE.txt
+-rw-r--r--. 1 mel mel    10843 Oct 20 16:13 log.txt
+-rw-r--r--. 1 mel mel      578 Oct 20 16:07 main.tf
+-rw-r--r--. 1 mel mel     3250 Oct 20 15:22 myplan.tfplan
+-rw-r--r--. 1 mel mel    14756 Oct  3 08:16 README.md
+drwxr-xr-x. 1 mel mel       18 Oct 20 15:19 .terraform
+-rw-r--r--. 1 mel mel     1154 Oct 20 15:19 .terraform.lock.hcl
+-rw-r--r--. 1 mel mel     8979 Oct 20 16:11 terraform.tfstate
+-rw-r--r--. 1 mel mel      181 Oct 20 16:10 terraform.tfstate.backup
+-rw-r--r--. 1 mel mel      225 Oct 20 16:09 terraform.tfvars
+-rw-r--r--. 1 mel mel 26744662 Oct 20 15:19 terraform.zip
+-rw-r--r--. 1 mel mel      702 Oct 20 16:10 variables.tf
