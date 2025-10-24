@@ -80,31 +80,65 @@ Algunos de los objetos que oferta k8s son:
   
 * `Service`: definen las reglas y el balanceo de cargas para acceder a su aplicación desde Internet
 
-Para crear un nuevo objeto `Deployment`, que llamaremos `hello-server`, a partir de la 
-imagen del contenedor `hello-app` (que se encuentra en `gcr.io/google-samples/hello-app`),
-vamos a usar el siguiente comando kubectl:
+Para crear un nuevo objeto `Deployment` y un `Service` usaremos manifiestos YAML y `kubectl apply` (recomendado para infra como código).
 
-```shell
-kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+Crea `deployment.yaml` con el siguiente contenido:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-server
+  template:
+    metadata:
+      labels:
+        app: hello-server
+    spec:
+      containers:
+      - name: hello-app
+        image: nginx:latest
+        ports:
+        - containerPort: 80
 ```
 
-Una vez hemos creado el objeto `deployment` que nos ha permitido desplegar la imagen, 
-necesitaremos crear un objeto `service`, un recurso de Kubernetes que permite exponer 
-la aplicación al tráfico externo. 
-En nuestro caso, queremos exponer la aplicación al tráfico externo vía puerto `8080`.
-Para ello:
+Aplica el despliegue:
 
 ```shell
-kubectl expose deployment hello-server --type=LoadBalancer --port 8080
+kubectl apply -f deployment.yaml
 ```
 
-En este comando, la opción `type="LoadBalancer"` crea un balanceador de cargas de Compute
-Engine para el contenedor.
+Crea `service.yaml` con el siguiente contenido:
 
-Una vez que se ha creado, podemos inspeccionar el objeto `Service` hello-server mediante:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-server
+spec:
+  type: LoadBalancer
+  selector:
+    app: hello-server
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+```
+
+Aplica el service (crea el LoadBalancer):
 
 ```shell
-kubectl get service
+kubectl apply -f service.yaml
+```
+
+Comprueba el Service:
+
+```shell
+kubectl get service hello-server
 ```
 
 
