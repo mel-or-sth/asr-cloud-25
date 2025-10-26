@@ -1,20 +1,151 @@
-## ENTREGA 1
-Montar un job de K8S el cual lance artillery. Para ello será necesario:
-- Generar un JOB de K8S definiendo a través de un fichero YAML usando la imagen base de artillery ([Imagen base Artillery](https://www.artillery.io/docs/guides/guides/docker))
-- Al pod del job será necesario montarle un yaml con el escenario de pruebas que a su vez es otro yaml. Para ello, como paso previo, será necesario usar el objeto "configmap". El config map permite cargar configuración ya sea mediante clave valor, como también definir como valor el contenido de un fichero. [Cargar fichero en configmap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/.
-- Al pod le montaremos en una ruta específica el fichero del configmap como un volumen [Montar un configmap en un POD](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-specific-path-in-the-volume)
+# 🧪 Práctica: Pruebas de rendimiento con k6 en Kubernetes
 
-- Por otro lado, al pod para indicarle los argumentos a lanzar, usaremos "command" en nuestro yaml de definición del job:
-[Ejecución comandos en un pod] (https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/)
+## 🎯 Objetivo
+Montar un **Job de Kubernetes** que lance una prueba de rendimiento usando **k6**.  
+El escenario de prueba se definirá en un **script de k6 (JavaScript)** que se cargará en el pod mediante un **ConfigMap**.  
+Al ejecutar el job, observaremos la salida del test desde los **logs del pod**.
 
-- Desplegar el job. Una vez hecho esto, la forma de seguir la ejecución será observando los logs de los pods. Para esto lo mejor será visitar el "logging" del propio GCP.
+---
 
+## 🧱 1. Estructura de los ficheros
 
-# ENTREGA
-Será necesario entregar:
-- El/los yaml del fichero configmap y del job. Vuestro profesor para corregir vuestra práctica lanzará:
+Tu entrega deberá contener al menos estos archivos:
+
 ```
-kubectl apply -f <folder> #Folder del alumno con los yamls en su interior
+/mi-practica-k6/
+├── k6-configmap.yaml
+├── k6-job.yaml
+└── test-script.js
 ```
 
-- Entregar la salida que ha producido la ejecución del pod. Bien en los logs del propio POD o en el logging de Google
+---
+
+## 🗂️ 2. Definir el script de prueba (`test-script.js`)
+
+Crea un script simple en **JavaScript**, que será montado en el contenedor k6.
+
+```js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export const options = {
+  vus: 5,        // Número de usuarios virtuales
+  duration: '20s', // Duración de la prueba
+};
+
+export default function () {
+  const res = http.get('https://test.k6.io');
+  check(res, { 'status is 200': (r) => r.status === 200 });
+  sleep(1);
+}
+```
+
+---
+
+## 🧩 3. Crear un ConfigMap (`k6-configmap.yaml`)
+
+El ConfigMap contendrá el script anterior, que luego montaremos como un fichero dentro del pod.
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-test-script
+data:
+  test-script.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+
+    export const options = {
+      vus: 5,
+      duration: '20s',
+    };
+
+    export default function () {
+      const res = http.get('https://test.k6.io');
+      check(res, { 'status is 200': (r) => r.status === 200 });
+      sleep(1);
+    }
+```
+
+---
+
+## ⚙️ 4. Definir el Job de Kubernetes (`k6-job.yaml`)
+
+Este Job usará la imagen oficial de **Grafana k6**, montará el script desde el ConfigMap y ejecutará el test.
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-load-test
+spec:
+  template:
+    spec:
+      containers:
+        - name: k6
+          image: grafana/k6:latest
+          command: ["k6", "run", "/test/test-script.js"]
+          volumeMounts:
+            - name: k6-script
+              mountPath: /test
+      restartPolicy: Never
+      volumes:
+        - name: k6-script
+          configMap:
+            name: k6-test-script
+  backoffLimit: 1
+```
+
+---
+
+## 🚀 5. Desplegar en Kubernetes
+
+Ejecuta los siguientes comandos en tu terminal:
+
+```bash
+kubectl apply -f k6-configmap.yaml
+kubectl apply -f k6-job.yaml
+```
+
+Comprueba que el job se haya creado:
+
+```bash
+kubectl get jobs
+```
+
+Verifica los pods generados:
+
+```bash
+kubectl get pods
+```
+
+---
+
+## 📜 6. Ver los resultados
+
+Cuando el Job haya terminado, muestra los resultados del test:
+
+```bash
+kubectl logs <nombre-del-pod>
+```
+
+(En GCP u otra plataforma gestionada, también puedes ver los logs desde el **visor de logging**).
+
+---
+
+## 🧾 ENTREGA
+
+Debes entregar:
+
+1. Los ficheros:
+   - `k6-configmap.yaml`
+   - `k6-job.yaml`
+   - `test-script.js`  
+2. Una captura o fichero de texto con la **salida del test** (logs del pod o del logging del clúster).
+
+El profesor podrá corregir ejecutando:
+
+```bash
+kubectl apply -f <folder_del_alumno>
+```
