@@ -138,7 +138,7 @@ Un PDF con pantallazos de la ejecución de Locust, mostrando:
 
 - Pruebas con distintas réplicas de servidor.
 
-- Pruebas con HPA o cambios en tamaño de nodos (si aplica).
+- Pruebas con HPA.
 
 El profesor podrá corregir aplicando:
 
