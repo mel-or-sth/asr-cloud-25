@@ -29,6 +29,7 @@ gcloud container clusters create $CLUSTER_NAME \
   --enable-autoscaling \
   --min-nodes=1 \
   --max-nodes=5 \
+  --disk-size=50 \
   --release-channel=rapid
 ```
 
