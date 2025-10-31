@@ -24,7 +24,12 @@ CLUSTER_NAME="demo-cluster"
 
 gcloud config set compute/zone $ZONE
 
-gcloud container clusters create $CLUSTER_NAME   --num-nodes=3   --enable-vertical-pod-autoscaling   --release-channel=rapid
+gcloud container clusters create $CLUSTER_NAME \
+  --num-nodes=3 \
+  --enable-autoscaling \
+  --min-nodes=1 \
+  --max-nodes=5 \
+  --release-channel=rapid
 ```
 
 Obtén las credenciales del cluster recién creado:
