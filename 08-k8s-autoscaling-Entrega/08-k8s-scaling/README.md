@@ -24,7 +24,13 @@ CLUSTER_NAME="demo-cluster"
 
 gcloud config set compute/zone $ZONE
 
-gcloud container clusters create $CLUSTER_NAME   --num-nodes=3   --enable-vertical-pod-autoscaling   --release-channel=rapid
+gcloud container clusters create $CLUSTER_NAME \
+  --num-nodes=3 \
+  --enable-autoscaling \
+  --min-nodes=1 \
+  --max-nodes=5 \
+  --disk-size=50 \
+  --release-channel=rapid
 ```
 
 Obtén las credenciales del cluster recién creado:
@@ -138,39 +144,7 @@ php-apache-hpa   Deployment/php-apache   0%/50%          1         10        3  
 
 ---
 
-## 4️⃣ Autoescalado del cluster (Cluster Autoscaler)
-
-Activa el autoescalado del cluster:
-
-```bash
-gcloud container clusters update $CLUSTER_NAME   --enable-autoscaling --min-nodes=1 --max-nodes=5
-```
-
-Cambia el perfil de autoscaling a uno más agresivo (opcional):
-
-```bash
-gcloud beta container clusters update $CLUSTER_NAME   --autoscaling-profile optimize-utilization
-```
-
-Verifica los nodos del cluster:
-
-```bash
-kubectl get nodes
-```
-
----
-
-## 5️⃣ Node Auto Provisioning (NAP)
-
-Activa el *Node Auto Provisioning* para permitir que GKE cree nuevos node pools automáticamente:
-
-```bash
-gcloud container clusters update $CLUSTER_NAME   --enable-autoprovisioning   --min-cpu 1   --min-memory 2   --max-cpu 45   --max-memory 160
-```
-
----
-
-## 6️⃣ Test de carga y observación del escalado
+## 4️⃣ Test de carga y observación del escalado
 
 Genera carga simulada sobre el servicio PHP-Apache con el siguiente comando:
 
