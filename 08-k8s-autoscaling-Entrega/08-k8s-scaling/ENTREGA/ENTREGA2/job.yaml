@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ab-load-test
+spec:
+  template:
+    spec:
+      containers:
+      - name: ab
+        image: gcr.io/myproyecto/ab:v0.0.1
+        command: ["ab","-n","10000","-c","10","http://php-apache"]
+      restartPolicy: Never
+  backoffLimit: 2
